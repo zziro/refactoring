@@ -18,15 +18,15 @@ What things you need to install are:
 
 ### Installing
 
-A step by step series of examples that tell you how to get the app on your local machine.
+A step by step of how to get the app on your local machine.
 
 Steps:
 
 ```
 * Go to https://github.com/zziro/refactoring
 * Cretea a folder in your local machine.
-* Inside the local machine, clone the project: git clone https://github.com/zziro/refactoring.git
-* Open and IDE that you prefer, and import the application (wait unil all dependencies are completely downlodad on your local repository.)
-* Once you jave imported the proect, go to the test and run all the tests, one-by-one to all in one.
+* Inside that local machine, clone the project: git clone https://github.com/zziro/refactoring.git
+* Open the IDE that you prefer, and import the application (wait unil all dependencies are completely downlodad on your local repository.)
+* Once you jave imported the proect, go to the test and run all the tests, one-by-one or all in one.
 * That is all. You made it :).
 ```
