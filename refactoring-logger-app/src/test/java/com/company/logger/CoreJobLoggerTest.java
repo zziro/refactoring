@@ -12,7 +12,7 @@ public class CoreJobLoggerTest {
     @Test(expected = IllegalArgumentException.class)
     public void StoreLogTo_InvalidDestination_IllegalArgumentExceptionThrown() {
         LogServiceImpl logService = new LogServiceImpl();
-        CoreJobLogger coreJobLogger = logService.storeLogTo(null).build();
+        CoreJobLogger coreJobLogger = logService.storeLogTo(null).build(); 
         coreJobLogger.generateLog("message", null);
     }
 
