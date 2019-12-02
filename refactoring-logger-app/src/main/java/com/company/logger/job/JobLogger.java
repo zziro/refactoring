@@ -14,17 +14,19 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class JobLogger {
-	/*
-	 * Put the required properties to a class model*/
+
+	/**
+	 * Create enums to  predefine, log level and the place to store the log (File, Console. Database)
+	 * */
 	private static boolean logToFile; 
 	private static boolean logToConsole;
 	private static boolean logMessage;
 	private static boolean logWarning;
 	private static boolean logError;
 	private static boolean logToDatabase;
-	private boolean initialized; // remove this propertie due that this is not used in the application
+	private boolean initialized; // remove this property due that this is not used in the application
 	private static Map dbParams;
-	private static Logger logger; // remove the logger propertie. This shoul stay at the top of a class to be logged
+	private static Logger logger;
 
 	public JobLogger(boolean logToFileParam, boolean logToConsoleParam, boolean logToDatabaseParam,
 			boolean logMessageParam, boolean logWarningParam, boolean logErrorParam, Map dbParamsMap) {
@@ -37,37 +39,34 @@ public class JobLogger {
 		logToConsole = logToConsoleParam;
 		dbParams = dbParamsMap;
 	}
-/*
-* Methods names should be verbs and the first letter should be on lowercase and other should have capitalize letter
-* */
+
+	/**
+	* Methods names should be verbs and the first letter should be on lowercase and other should have capitalize letter
+	* */
 	public static void LogMessage(String messageText, boolean message, boolean warning, boolean error)
 			throws Exception {
 		messageText.trim();
 		if (messageText == null || messageText.length() == 0) {
-			return;
+			return; //Throw an IllegalArgumentException and request the user to enter a value for message variable, so the user should know what do; making the application more usable.
 		}
-		if (!logToConsole && !logToFile && !logToDatabase) {
-			throw new Exception("Invalid configuration");
+		if (!logToConsole && !logToFile && !logToDatabase) { // Create a enum to classify the places/destination to store all logs such as CONSOLE, FILE or DATABASE
+			throw new Exception("Invalid configuration"); // Use constants to put predefine messages.
 		}
-		if ((!logError && !logMessage && !logWarning) || (!message && !warning && !error)) {
+		if ((!logError && !logMessage && !logWarning) || (!message && !warning && !error)) { // Create a enum to classify the level of logs namely ERROR; MESSAGE or WARNING
 			throw new Exception("Error or Warning or Message must be specified");
 		}
 
-		/*
-		* //The connection to database has automated. The properties connection should go on a properies file, located src/main/resources.
-		* With this configuration we prevent the necessity to connect to the database every time the method is called.
-		* */
 		Connection connection = null;
 		Properties connectionProps = new Properties();
 		connectionProps.put("user", dbParams.get("userName"));
 		connectionProps.put("password", dbParams.get("password"));
 
-		connection = DriverManager.getConnection("jdbc:" + dbParams.get("dbms") + "://" + dbParams.get("serverName")
+		connection = DriverManager.getConnection("jdbc:" + dbParams.get("dbms") + "://" + dbParams.get("serverName") // Use StringBuilder because is much faster and it consumes less memory. And also create to method to manage connections to database.
 				+ ":" + dbParams.get("portNumber") + "/", connectionProps);
 
 		int t = 0;
 		if (message && logMessage) {
-			t = 1;
+			t = 1; // Use enum to classify the log level
 		}
 
 		if (error && logError) {
@@ -81,16 +80,16 @@ public class JobLogger {
 		Statement stmt = connection.createStatement();
 
 		String l = null;
-		File logFile = new File(dbParams.get("logFileFolder") + "/logFile.txt");
+		File logFile = new File(dbParams.get("logFileFolder") + "/logFile.txt"); // Create a method for, print in a file functionality. It will prevent the have spaghetti code.
 			if (!logFile.exists()) {
 			logFile.createNewFile();
 		}
 
 		FileHandler fh = new FileHandler(dbParams.get("logFileFolder") + "/logFile.txt");
-		ConsoleHandler ch = new ConsoleHandler();
+		ConsoleHandler ch = new ConsoleHandler(); // Create a method to put the, print to the console functionality, to prevent spaghetti code.
 
 		if (error && logError) {
-			l = l + "error " + DateFormat.getDateInstance(DateFormat.LONG).format(new Date()) + messageText;
+			l = l + "error " + DateFormat.getDateInstance(DateFormat.LONG).format(new Date()) + messageText; // Classify the erroe message using enums
 		}
 
 		if (warning && logWarning) {
@@ -112,7 +111,7 @@ public class JobLogger {
 		}
 
 		if (logToDatabase) {
-			stmt.executeUpdate("insert into Log_Values('" + message + "', " + String.valueOf(t) + ")"); // The tables should be named in singular mode.
+			stmt.executeUpdate("insert into Log_Values('" + message + "', " + String.valueOf(t) + ")");
 		}
 	}
 }
