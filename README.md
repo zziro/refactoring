@@ -27,6 +27,6 @@ Steps:
 * Cretea a folder in your local machine.
 * Inside that local machine, clone the project: git clone https://github.com/zziro/refactoring.git
 * Open the IDE that you prefer, and import the application (wait unil all dependencies are completely downlodad on your local repository.)
-* Once you jave imported the proect, go to the test and run all the tests, one-by-one or all in one.
+* Once you jave imported the project, go to the test and run all the tests, one-by-one or all in one.
 * That is all. You made it :).
 ```
